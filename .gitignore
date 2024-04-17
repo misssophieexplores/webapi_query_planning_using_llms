@@ -1,3 +1,5 @@
 
 .env
 /shopping_lists
+**/.DS_Store
+.DS_Store
