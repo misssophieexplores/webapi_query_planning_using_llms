@@ -15,7 +15,7 @@ headers = {
 
 
 def translate(text:str):
-    """Translate text from Gernan to English."""
+    """Translate text from German to English."""
     url = "https://google-translator9.p.rapidapi.com/v2"
 
     payload = {

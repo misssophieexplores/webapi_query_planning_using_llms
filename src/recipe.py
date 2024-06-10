@@ -26,7 +26,7 @@ headers = {
 def find_recipe(
         query: str,
         diet: str = None,
-        include_ingredients: Optional[List[str]] = None,  # Assuming this is a list of ingredient names
+        include_ingredients: Optional[List[str]] = None,
         exclude_ingredients: Optional[List[str]] = None,
         type: str = "main course",
         instructions_required: bool = True,
@@ -36,8 +36,13 @@ def find_recipe(
         exclude_cuisine: Optional[str] = None,
         max_ready_time: Optional[int] = None,
         ignore_pantry: bool = True,
-
-        number: int = 1
+        min_carbs: Optional[int] = None,
+        max_carbs: Optional[int] = None,
+        min_protein: Optional[int] = None,
+        max_protein: Optional[int] = None,
+        min_calories: Optional[int] = None,
+        max_calories: Optional[int] = None,
+        number: int = 3
         ):
     
     querystring = {
@@ -67,7 +72,18 @@ def find_recipe(
         querystring["addRecipeInformation"] = str(add_recipe_information).lower(),
     if ignore_pantry is not None:
         querystring["ignorePantry"] = str(ignore_pantry).lower(),
-
+    if min_carbs is not None:
+        querystring["minCarbs"] = min_carbs
+    if max_carbs is not None:
+        querystring["maxCarbs"] = max_carbs
+    if min_protein is not None:
+        querystring["minProtein"] = min_protein
+    if max_protein is not None:
+        querystring["maxProtein"] = max_protein
+    if min_calories is not None:
+        querystring["minCalories"] = min_calories
+    if max_calories is not None:
+        querystring["maxCalories"] = max_calories
         
     response = requests.get(food_url, headers=headers, params=querystring)
     return response.json()
@@ -89,6 +105,7 @@ def get_recipe_info(recipe_id: int, list_keys: list = None) -> dict:
                 answer['prepTime'] = data.get('prepTime', 'Not provided')
                 answer['cookTime'] = data.get('cookTime', 'Not provided')
                 answer['totalTime'] = data.get('totalTime', 'Not provided')
+                answer['isReadyInMinutes'] = data.get('readyInMinutes', 'Not provided')
 
             if 'ingredients_id' in list_keys: # Handling 'ingredients_id' key
                 # Assuming ingredients are provided in a list of dictionaries under 'ingredients'
@@ -99,7 +116,6 @@ def get_recipe_info(recipe_id: int, list_keys: list = None) -> dict:
                 answer['instructions'] = data.get('instructions', 'No Instructions')
 
             if 'ingredients' in list_keys: # Check for 'ingredients' key in list_keys
-                # Assuming 'extendedIngredients' is always present, but you might want to check for its existence
                 extendedIngredients = data.get('extendedIngredients', [])
                 if 'measurements' in list_keys:
                     # Extracting both ingredient names and their measurements

@@ -1,13 +1,18 @@
 import requests
+import sys
 import os
 import psycopg2
 from dotenv import load_dotenv
 from requests import JSONDecodeError, ConnectionError, ConnectTimeout
 from typing import Optional, List
 
-from src.utils import *
+# Calculate the path to the root directory (one level up from the script directory)
+root_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+if root_path not in sys.path:
+    sys.path.append(root_path)
 from config.config import DAY
 from src.utils import OFFERS_START_DATE, OFFERS_END_DATE
+from src.utils import *
 
 
 # Load env file

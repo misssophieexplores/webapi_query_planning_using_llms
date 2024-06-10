@@ -1,0 +1,37 @@
+Explaination of the values
+function:
+    1: function was supposed to be used and LLM was able to use it
+    0: function was supposed to be used but LLM was not able to use it because of previous events (e.g. error in another function)
+        --> set all used_function, parameter, used_parameter to Nan values
+    -1: using this function was the cause of the breakdown (e.g. APIs response is responsible for early stopping)
+
+used_function:
+    1: function was used as intended
+    0: function was not used
+        --> set all parameter values to 0, used_parameters stay Nan
+    -1: usage (i.e. the way the LLM used the function) was the cause of the breakdown / early stopping / error (in second experiment setup: not used anymore)
+    -2: function was called where it was not needed or not meant to be used
+    -5: correct_functions set to false; temporary value only, should be removed when analysing
+
+parameter:
+    1: parameter was supposed to be used and LLM was able to use it
+    0: corresponding function was not used
+        --> set used_paraemter to Nan
+    -1: this parameter was the cause of the was the cause of the breakdown / early stopping / error
+
+used_parameter:
+    1: parameter was used as intended (correctly chosen parameter, correctly set values for this parameter)
+    0: parameter not used or wrongly used (e.g. not set the parameter where needed or used a wrong value); (with new way of errors being fed to LLM: also if LLM caused an error)
+    -1: parameter not used or wrongly used which caused a breakdown / early stopping / error which hindered the LLM to continue with its task (in second experiment setup: not used anymore)
+    -2: parameter was chosen which was not meant to be used
+    -7: correct_params is set to False; temporary value only, should be removed when analysing
+
+
+
+
+Example
+The function "function_find_recipe" has 8 parameters, so I created 18 = 2*1 (for the function) + 2*8 (for each parameter) columns which I labelled with either: Nan (empty), 1, 0, -1, -2.
+
+
+Using veggies that are currently on offer, please make a recipe suggestion and pair a wine with it. I prefer European, and Chinese cuisines. I am intolerant to peanuts.
+Using veggies that are currently on offer, please make a recipe suggestion and pair a wine with it. I prefer European, and Chinese cuisines. I am intolerant to peanuts.
